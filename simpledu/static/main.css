@@ -1,3 +1,19 @@
-body {
-    background-color:red;
+a,
+a:hover,
+a:visited {
+  text-decoration: none !important;
+}
+
+.nav-pagination{
+    text-align: center;
+}
+
+.course__name,
+.course__description {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap
+}
+.course img {
+  height: 160px !important;
 }
