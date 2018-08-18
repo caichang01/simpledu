@@ -13,9 +13,9 @@ Course - {{ course.name }}
  <div class="col-md-8">
     <div class="list-group">
       {% for chapter in course.chapters %}
-      <a class="list-group-item" href="?">
+      <a class="list-group-item" href="{{ chapter.url }}">
         <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-        <span>{{ chapter.name }} &nbsp; ({{ chapter.vedio_duration }})</span>
+        <span>{{ chapter.name }} &nbsp; ({{ chapter.video_duration }})</span>
       </a>
       {% endfor %}
     </div>

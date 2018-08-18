@@ -6,6 +6,7 @@ from flask import request, current_app
 
 front = Blueprint('front', __name__)
 
+
 @front.route('/')
 def index():
     page = request.args.get('page', default=1, type=int)
@@ -13,6 +14,7 @@ def index():
             per_page=current_app.config['INDEX_PER_PAGE'],
             error_out=False)
     return render_template('index.html', pagination=courses)
+
 
 @front.route('/login', methods=['GET', 'POST'])
 def login():
@@ -23,19 +25,21 @@ def login():
         return redirect(url_for('.index'))
     return render_template('login.html', form=form)
 
+
 @front.route('/logout')
 @login_required
 def logout():
     logout_user()
-    flash('logout success', 'success')
+    flash('您已成功登出', 'success')
     return redirect(url_for('.index'))
+
 
 @front.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
         form.create_user()
-        flash('register success', 'success')
+        flash('您已成功注册！', 'success')
         return redirect(url_for('.login'))
     return render_template('register.html', form=form)
 

@@ -33,8 +33,8 @@ def iter_chapters():
             yield Chapter(
                 name=fake.sentence(),
                 course=course,
-                vedio_url='https://labfile.oss.aliyuncs.com/courses/923/week2_mp4/2-1-1-mac.mp4',
-                vedio_duration='{}:{}'.format(randint(10, 30), randint(10, 59))
+                video_url='https://labfile.oss.aliyuncs.com/courses/923/week2_mp4/2-1-1-mac.mp4',
+                video_duration='{}:{}'.format(randint(10, 30), randint(10, 59))
             )
 
 
