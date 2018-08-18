@@ -28,6 +28,12 @@ class RegisterForm(FlaskForm):
         db.session.commit()
         return user
 
+    def update_user(self, user):
+        self.populate_obj(user)
+        db.session.add(user)
+        db.session.commit()
+        return user
+
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])

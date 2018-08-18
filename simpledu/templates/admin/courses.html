@@ -5,6 +5,13 @@
 Admin - Courses
 {% endblock %}
 
+{% block operation %}
+    <a href="{{ url_for('admin.create_course') }}" type="button" class="btn btn-primary">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        创建课程
+    </a>
+{% endblock %}
+
 {% block admin %}
 <table class="table">
     <thead>

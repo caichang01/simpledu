@@ -1,0 +1,7 @@
+{% extends "admin/index.html" %}
+{% from "macros.html" import render_form %}
+
+{% block admin %}
+<h4>更新用户</h4>
+{{ render_form(form, url_for('admin.update_user', user_id=user.id)) }}
+{% endblock %}

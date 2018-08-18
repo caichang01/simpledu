@@ -1,0 +1,60 @@
+{% extends "admin/index.html" %}
+{% from "macros.html" import render_pagination %}
+
+{% block title %}
+Admin - Users
+{% endblock %}
+
+{% block operation %}
+    <a href="{{ url_for('admin.create_user') }}" type="button" class="btn btn-primary">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        创建用户
+    </a>
+{% endblock %}
+
+{% block admin %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>用户名</th>
+            <th>邮箱</th>
+            <th>职业</th>
+            <th>权限</th>
+            <th>操作</th>
+        </tr>
+        <tbody>
+            {% for user in pagination.items %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.job }}</td>
+                    <td>
+                        {% if user.role == 10 %}
+                        普通用户
+                        {% elif user.role == 20 %}
+                        工作人员
+                        {% elif user.role == 30 %}
+                        管理员
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a href="{{ url_for('admin.update_user', user_id=user.id) }}" type="button" class="btn btn-default" title="编辑">
+                                <span class="glyphicon glyphicon-pencil" title="编辑" aria-hidden="true"></span>
+                            </a>
+                            <a href="{{ url_for('admin.delete_user', user_id=user.id) }}" type="button" class="btn btn-default" title="删除">
+                                <span class="glyphicon glyphicon-trash" title="删除" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </thead>
+</table>
+
+<!-- 使用 macro 渲染分页 -->
+{{ render_pagination(pagination, 'admin.courses') }}
+{% endblock %}
