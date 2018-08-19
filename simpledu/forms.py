@@ -5,10 +5,10 @@ from simpledu.models import db, User, Course, Live
 from wtforms import ValidationError
 
 class RegisterForm(FlaskForm):
-    username = StringField('用户名', validators=[DataRequired(), Length(3, 24)])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('密码', validators=[DataRequired(), Length(6, 24)])
-    repeat_password = PasswordField('重复密码', validators=[DataRequired(), EqualTo('password')])
+    username = StringField('用户名', validators=[DataRequired(), Length(3, 24, message='用户名的长度为3-24个字符之间')])
+    email = StringField('Email', validators=[DataRequired(), Email(message='请输入合法的email地址')])
+    password = PasswordField('密码', validators=[DataRequired(), Length(6, 24, message='密码的长度为6-24个字符之间')])
+    repeat_password = PasswordField('重复密码', validators=[DataRequired(), EqualTo('password', message='请输入同样的密码')])
     submit = SubmitField('提交')
 
     def validate_username(self, field):
@@ -52,9 +52,9 @@ class LoginForm(FlaskForm):
 
 
 class CourseForm(FlaskForm):
-    name = StringField('课程名称', validators=[DataRequired(), Length(5, 32)])
-    description = TextAreaField('课程描述', validators=[DataRequired(), Length(20, 256)])
-    image_url = StringField('封面图链接', validators=[DataRequired(), URL()])
+    name = StringField('课程名称', validators=[DataRequired(), Length(5, 32, message='课程名称的长度为5-32个字符之间')])
+    description = TextAreaField('课程描述', validators=[DataRequired(), Length(20, 256, message='课程描述的长度为20-256个字符之间')])
+    image_url = StringField('封面图链接', validators=[DataRequired(), URL(message='请输入合法的url地址')])
     author_id = IntegerField('作者ID', validators=[DataRequired(), NumberRange(min=1, message='无效的用户ID')])
     submit = SubmitField('提交')
 
@@ -77,10 +77,10 @@ class CourseForm(FlaskForm):
 
 
 class LiveForm(FlaskForm):
-    name = StringField('直播名称', validators=[DataRequired(), Length(5, 32)])
-    description = TextAreaField('直播描述', validators=[DataRequired(), Length(20, 256)])
-    image_url = StringField('封面图链接', validators=[DataRequired(), URL()])
-    live_url = StringField('直播拉流链接', validators=[DataRequired(), URL()])
+    name = StringField('直播名称', validators=[DataRequired(), Length(2, 32, message='直播名称的长度为2-32个字符之间')])
+    description = TextAreaField('直播描述', validators=[DataRequired(), Length(5, 256, message='直播描述的长度为5-256个字符之间')])
+    image_url = StringField('封面图链接', validators=[DataRequired(), URL('请输入合法的url地址')])
+    live_url = StringField('直播拉流链接', validators=[DataRequired(), URL('请输入合法的url地址')])
     broadcaster_id = IntegerField('主播ID', validators=[DataRequired(), NumberRange(min=1, message='无效的用户ID')])
     submit = SubmitField('提交')
 
@@ -90,11 +90,7 @@ class LiveForm(FlaskForm):
 
     def create_live(self):
         live = Live()
-        live.name = self.name.data
-        live.description = self.description.data
-        live.image_url = self.image_url.data
-        live.live_url = self.live_url.data
-        live.broadcaster_id = self.broadcaster_id
+        self.populate_obj(live)
         db.session.add(live)
         db.session.commit()
         return live
