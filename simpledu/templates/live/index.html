@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% from "macros.html" import render_pagination %}
+
+{% block title %}
+Live
+{% endblock %}
+
+{% block active_li %}
+    <li><a href="/">课程</a></li>
+    <li class="active"><a href="{{ url_for('live.index') }}">直播<span class="sr-only">(current)</span></a></li>
+    {% if current_user.is_authenticated and current_user.is_admin %}
+        <li><a href="{{ url_for('admin.index') }}">控制台</a></li>
+    {% endif %}
+{% endblock %}
+
+{%block body %}
+<div class="row">
+  {% for live in pagination.items %}
+  <div class="col-sm-6 col-md-4 live">
+    <div class="thumbnail">
+      <a href="{{ live.url }}" target="_blank">
+        <img src="{{ live.image_url }}" alt="直播">
+        <div class="caption">
+            <h4 class="live__name">{{ live.name }}</h4>
+            <p class="live__description">{{ live.description }}</p>
+        </div>
+      </a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<!-- 使用 macro 渲染分页组件 -->
+{{ render_pagination(pagination, 'live.index') }}
+{% endblock %}

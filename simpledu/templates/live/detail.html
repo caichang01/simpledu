@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}
+Live
+{% endblock %}
+
+{% block active_li %}
+    <li><a href="/">课程</a></li>
+    <li class="active"><a href="{{ url_for('live.index') }}">直播<span class="sr-only">(current)</span></a></li>
+    {% if current_user.is_authenticated and current_user.is_admin %}
+        <li><a href="{{ url_for('admin.index') }}">控制台</a></li>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-9">
+        <video id="videoElement" width="100%" height="500px" controls="controls"></video>
+    </div>
+    <div class="col-md-3">
+
+    </div>
+</div>
+{% endblock %}
+
+{% block tail_js %}
+{{ super() }}
+<!-- 备用链接 https://cdnjs.cloudfare.com/ajax/libs/flv.js/1.3.3/flv.min.js -->
+<script src="https://cdn.bootcss.com/flv.js/1.4.2/flv.min.js"></script>
+    <script>
+    if (flvjs.isSupported()) {
+        // 获取video 标签
+        var videoElement = document.getElementById('videoElement')
+        // 初始化播放器
+        var flvPlayer = flvjs.createPlayer({
+            // 设置流的类型
+            type: 'flv',
+            // 是否是直播
+            isLive: true,
+            // 直播流地址
+            url: '{{ live.live_url }}'
+        });
+        flvPlayer.attachMediaElement(videoElement);
+        flvPlayer.load();
+        // 播放直播
+        flvPlayer.play();
+    }
+    </script>
+{% endblock %}

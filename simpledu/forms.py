@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, IntegerField
-from wtforms.validators import Length, Email, EqualTo, Required, DataRequired, URL, NumberRange
-from simpledu.models import db, User, Course
+from wtforms.validators import Length, Email, EqualTo, DataRequired, URL, NumberRange
+from simpledu.models import db, User, Course, Live
 from wtforms import ValidationError
 
 class RegisterForm(FlaskForm):
@@ -74,3 +74,27 @@ class CourseForm(FlaskForm):
         db.session.add(course)
         db.session.commit()
         return course
+
+
+class LiveForm(FlaskForm):
+    name = StringField('直播名称', validators=[DataRequired(), Length(5, 32)])
+    description = TextAreaField('直播描述', validators=[DataRequired(), Length(20, 256)])
+    image_url = StringField('封面图链接', validators=[DataRequired(), URL()])
+    live_url = StringField('直播拉流链接', validators=[DataRequired(), URL()])
+    broadcaster_id = IntegerField('主播ID', validators=[DataRequired(), NumberRange(min=1, message='无效的用户ID')])
+    submit = SubmitField('提交')
+
+    def validate_broadcaster_id(self, field):
+        if not User.query.get(self.broadcaster_id.data):
+            raise ValidationError('指定主播不存在')
+
+    def create_live(self):
+        live = Live()
+        live.name = self.name.data
+        live.description = self.description.data
+        live.image_url = self.image_url.data
+        live.live_url = self.live_url.data
+        live.broadcaster_id = self.broadcaster_id
+        db.session.add(live)
+        db.session.commit()
+        return live

@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <title>{% block title %}{% endblock %}</title>
         {% block head_css %}
+        <!-- 备用链接  -->
         <link rel="stylesheet" href="http://labfile.oss.aliyuncs.com/courses/923/week7/code/bootstrap-3.3.7-dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
         {% endblock %}
@@ -25,11 +26,13 @@
 	<!-- Collect the nav links, forms, and other content for toggling -->
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	<ul class="nav navbar-nav">
-		<li class="active"><a href="/">课程<span class="sr-only">(current)</span></a></li>
-		<li><a href="#">直播</a></li>
-        {% if current_user.is_authenticated and current_user.is_admin %}
-        <li><a href="{{ url_for('admin.index') }}">控制台</a></li>
-        {% endif %}
+        {% block active_li %}
+		    <li class="active"><a href="/">课程<span class="sr-only">(current)</span></a></li>
+		    <li><a href="{{ url_for('live.index') }}">直播</a></li>
+            {% if current_user.is_authenticated and current_user.is_admin %}
+            <li><a href="{{ url_for('admin.index') }}">控制台</a></li>
+            {% endif %}
+        {% endblock %}
 	</ul>
 <ul class="nav navbar-nav navbar-right">
   {% if not current_user.is_authenticated %}
@@ -67,7 +70,9 @@
 </div>
       {% block tail_js %}
       <!-- Bootstrap ?? jQuery -->
+      <!-- 备用链接  -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <!-- 备用链接  -->
       <script src="http://labfile.oss.aliyuncs.com/courses/923/week7/code/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
       {% endblock %}
     </body>    

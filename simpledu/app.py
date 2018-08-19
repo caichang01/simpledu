@@ -17,10 +17,11 @@ def register_extensions(app):
     login_manager.login_view = 'front.login'
 
 def register_blueprints(app):
-    from .handlers import front, course, admin
+    from .handlers import front, course, admin, live
     app.register_blueprint(front)
     app.register_blueprint(course)
     app.register_blueprint(admin)
+    app.register_blueprint(live)
 
 def create_app(config):
     app = Flask(__name__)

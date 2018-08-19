@@ -4,6 +4,14 @@
 Admin
 {% endblock %}
 
+{% block active_li %}
+    <li><a href="/">课程</a></li>
+    <li><a href="{{ url_for('live.index') }}">直播</a></li>
+    {% if current_user.is_authenticated and current_user.is_admin %}
+        <li class="active"><a href="{{ url_for('admin.index') }}">控制台<span class="sr-only">(current)</span></a></li>
+    {% endif %}
+{% endblock %}
+
 {% block body %}
 <div class="row">
     <div class="col-md-3">
@@ -11,6 +19,7 @@ Admin
         <div class="list-group">
             <a href="{{ url_for('admin.users') }}" class="list-group-item">用户</a>
             <a href="{{ url_for('admin.courses') }}" class="list-group-item">课程</a>
+            <a href="{{ url_for('admin.lives') }}" class="list-group-item">直播</a>
         </div>
         
         {% block operation %}

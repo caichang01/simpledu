@@ -17,3 +17,13 @@ a:visited {
 .course img {
   height: 160px !important;
 }
+
+.live__name,
+.live__description {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap
+}
+.live img {
+  height: 160px !important;
+}
