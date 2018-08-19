@@ -29,10 +29,10 @@ Admin - Lives
                     <td>{{ live.broadcaster.username }}</td>
                     <td>
                         <div class="btn-group" role="group">
-                            <a href="#" type="button" class="btn btn-default" title="编辑">
+                            <a href="{{ url_for('admin.update_live', live_id=live.id) }}" type="button" class="btn btn-default" title="编辑">
                                 <span class="glyphicon glyphicon-pencil" title="编辑" aria-hidden="true"></span>
                             </a>
-                            <a href="#" type="button" class="btn btn-default" title="删除">
+                            <a href="{{ url_for('admin.delete_live', live_id=live.id) }}" type="button" class="btn btn-default" title="删除">
                                 <span class="glyphicon glyphicon-trash" title="删除" aria-hidden="true"></span>
                             </a>
                         </div>

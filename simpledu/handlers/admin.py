@@ -123,3 +123,25 @@ def create_live():
         flash('直播已成功创建！', 'success')
         return redirect(url_for('admin.lives'))
     return render_template('admin/create_lives.html', form=form)
+
+
+@admin.route('/lives/<int:live_id>/update', methods=['GET', 'POST'])
+@admin_required
+def update_live(live_id):
+    live = Live.query.get_or_404(live_id)
+    form = LiveForm(obj=live)
+    if form.validate_on_submit():
+        form.update_live(live)
+        flash('直播已成功更新！', 'success')
+        return redirect(url_for('admin.lives'))
+    return render_template('admin/update_lives.html', form=form, live=live)
+
+
+@admin.route('/lives/<int:live_id>/delete')
+@admin_required
+def delete_live(live_id):
+    live = Live.query.get_or_404(live_id)
+    db.session.delete(live)
+    db.session.commit()
+    flash('直播已成功删除！', 'success')
+    return redirect(url_for('admin.lives'))

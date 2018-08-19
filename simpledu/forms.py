@@ -94,3 +94,9 @@ class LiveForm(FlaskForm):
         db.session.add(live)
         db.session.commit()
         return live
+
+    def update_live(self, live):
+        self.populate_obj(live)
+        db.session.add(live)
+        db.session.commit()
+        return live

@@ -1,0 +1,7 @@
+{% extends "admin/index.html" %}
+{% from "macros.html" import render_form %}
+
+{% block admin %}
+<h4>更新直播</h4>
+{{ render_form(form, url_for('admin.update_live', live_id=live.id)) }}
+{% endblock %}
