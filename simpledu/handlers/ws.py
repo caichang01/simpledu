@@ -53,4 +53,20 @@ chat.start()
 def inbox(ws):
     # 使用 flask-sockets， ws 链接对象会被自动注入到路由处理函数
     # 该处理函数用来处理前端连接发过来的消息。请注意 while 循环，
-    # 里面的 receive（） 函数实际上是在阻塞运行的，
+    # 里面的 receive（） 函数实际上是在阻塞运行的，直到前端发送消息过来
+    # 消息会被放到 chat 频道，也就是我们的消息队列中，这样一直循环。
+    # 直到 websocket 连接关闭
+    while not ws.closed:
+        message = ws.receive()
+
+        if message:
+            # 发送消息到 chat 频道
+    redis.publish('chat', message)
+
+
+@ws.route('/recv')
+def outbox(ws):
+    # 本函数用来注册客户端连接，并且在 Chatroom 中将其他客户端接收到的信息送给这些客户端
+    chat.register(ws)
+    while not ws.closed:
+        gevent.sleep(0.1)
