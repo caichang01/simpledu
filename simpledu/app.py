@@ -3,6 +3,8 @@ from simpledu.config import configs
 from simpledu.models import db, Course, User
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_sockets import Sockets
+
 
 def register_extensions(app):
     db.init_app(app)
@@ -16,12 +18,16 @@ def register_extensions(app):
 
     login_manager.login_view = 'front.login'
 
+
 def register_blueprints(app):
-    from .handlers import front, course, admin, live
+    from .handlers import front, course, admin, live, ws
     app.register_blueprint(front)
     app.register_blueprint(course)
     app.register_blueprint(admin)
     app.register_blueprint(live)
+    sockets = Sockets(app)
+    app.register_blueprint(ws)
+
 
 def create_app(config):
     app = Flask(__name__)

@@ -1,7 +1,23 @@
 {% extends "base.html" %}
 
 {% block title %}
-Live
+{{ live.name }}-{{ live.broadcaster.username }}
+{% endblock %}
+
+{% block head_css %}
+{{ super() }}
+    <style>
+    #message-box {
+        background-color: #eeeeee;
+        font-size: 15px;
+        padding: 3px 0 0 5px;
+        width: 100%;
+        height: 455px;
+        border-radius: 3px;
+        margin-bottom: 10px;
+        overflow: scroll;
+    }
+    </style>
 {% endblock %}
 
 {% block active_li %}
@@ -15,12 +31,17 @@ Live
 {% block body %}
 <div class="row">
     <div class="col-md-9">
-        <h2>{{ live.name }}</h2>
-        <p>主播：{{ live.broadcaster.username }}</p>
         <video id="videoElement" width="100%" height="500px" controls="controls"></video>
     </div>
     <div class="col-md-3">
-
+        <div id="message-box">
+        </div>
+        <div class="input-group" id="message-form">
+            <input type="text" class="form-control">
+            <span class="input-group-btn">
+                <button class="btn btn-primary" type="button">发言</button>
+            </span>
+        </div><!-- /input-group -->
     </div>
 </div>
 {% endblock %}
