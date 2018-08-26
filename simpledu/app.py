@@ -1,6 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask
 from simpledu.config import configs
-from simpledu.models import db, Course, User
+from simpledu.models import db, User
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_sockets import Sockets
@@ -26,7 +26,7 @@ def register_blueprints(app):
     app.register_blueprint(admin)
     app.register_blueprint(live)
     sockets = Sockets(app)
-    app.register_blueprint(ws)
+    sockets.register_blueprint(ws)
 
 
 def create_app(config):

@@ -61,7 +61,7 @@ def inbox(ws):
 
         if message:
             # 发送消息到 chat 频道
-    redis.publish('chat', message)
+            redis.publish('chat', message)
 
 
 @ws.route('/recv')

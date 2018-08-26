@@ -69,4 +69,38 @@
         flvPlayer.play();
     }
     </script>
+    <script>
+        var inbox = new WebSocket('ws://' + location.host + "/ws/recv");
+
+        var outbox = new WebSocket('ws://' + location.host + "/ws/send");
+
+        // 服务器有消息后，解析消息，组合成 username：message 的形式添加到消息展示框中
+        inbox.onmessage = function (message) {
+            console.log(message);
+            var data = JSON.parse(message.data);
+            $("#message-box").append('<p><b>' + data.username + '<b>' + ':' + data.text + '<p>');
+        };
+
+        // WebSocket 断开后，自动重连
+        inbox.onclose = function (message) {
+            console.log('inbox closed');
+            this.inbox = new WebSocket('ws://' + location.host + "/ws/recv");
+        };
+
+        outbox.onclose = function (message) {
+            console.log('outbox closed');
+            this.outbox = new WebSocket('ws://' + location.host + "/ws/send");
+        };
+
+        $("#message-form button").on("click", function (event) {
+            // 获取用户发言内容
+            text = $('#message-form input').val();
+            // 获取用户名
+            username = $('#username').text();
+            // 发送数据到 websocket 的后台处理接口
+            outbox.send(JSON.stringify({username: username, text: text}));
+            // 提交后，将输入框设定为空
+            $('#message-form input').val('');
+        });
+    </script>
 {% endblock %}
