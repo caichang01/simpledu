@@ -1,6 +1,7 @@
 from flask import Blueprint
 import redis
 import gevent
+import json
 
 
 ws = Blueprint('ws', __name__, url_prefix='/ws')
@@ -68,5 +69,9 @@ def inbox(ws):
 def outbox(ws):
     # 本函数用来注册客户端连接，并且在 Chatroom 中将其他客户端接收到的信息送给这些客户端
     chat.register(ws)
+    redis.publish('chat', json.dumps(dict(
+        username='New user come in, people count',
+        text=len(chat.clients)
+    )))
     while not ws.closed:
         gevent.sleep(0.1)
