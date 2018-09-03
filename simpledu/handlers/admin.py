@@ -1,7 +1,9 @@
 from flask import Blueprint, render_template, request, current_app, redirect, url_for, flash
 from simpledu.decorators import admin_required
 from simpledu.models import Course, User, Live
-from simpledu.forms import CourseForm, db, RegisterForm, LiveForm
+from simpledu.forms import CourseForm, db, RegisterForm, LiveForm, MessageForm
+from .ws import redis
+import json
 
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -145,3 +147,17 @@ def delete_live(live_id):
     db.session.commit()
     flash('直播已成功删除！', 'success')
     return redirect(url_for('admin.lives'))
+
+
+@admin.route('/message', methods=['GET', 'POST'])
+@admin_required
+def send_system_message():
+    form = MessageForm()
+    if form.validate_on_submit():
+        redis.publish('chat', json.dumps(dict(
+            username='System message',
+            text=form.text.data
+        )))
+        flash('系统消息已成功发送', 'success')
+        return redirect((url_for('admin.index')))
+    return render_template('admin/message.html', form=form)
