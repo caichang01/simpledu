@@ -3,3 +3,4 @@ __pycache__/
 .vscode/
 simpledu/__pycache__/
 simpledu/handlers/__pycache__/
+scripts/__pycache__/
